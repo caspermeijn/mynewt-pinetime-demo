@@ -29,7 +29,7 @@
 #endif
 
 static int 
-charge_control_data_callback(struct charge_control *chg_ctrl, void * arg,
+charger_data_callback(struct charge_control *chg_ctrl, void * arg,
         void *data, charge_control_type_t type) 
 {
     if (type == CHARGE_CONTROL_TYPE_STATUS) {
@@ -52,16 +52,18 @@ charge_control_data_callback(struct charge_control *chg_ctrl, void * arg,
     return 0;
 }
 
-struct charge_control *charge_control;
+struct charge_control *charger;
 
-struct charge_control_listener charge_control_listener = {
+struct charge_control_listener charger_listener = {
     .ccl_type = CHARGE_CONTROL_TYPE_STATUS,
-    .ccl_func = charge_control_data_callback,
+    .ccl_func = charger_data_callback,
 };
 
 static void 
-charge_control_init(void)
+charger_init(void)
 {
+    int rc;
+
     charger = charge_control_mgr_find_next_bytype(CHARGE_CONTROL_TYPE_STATUS, NULL);
     assert(charger);
 
@@ -113,7 +115,7 @@ main(int argc, char **argv)
     sysinit();
 
     periodic_init();
-    charge_control_init();
+    charger_init();
 
     while (1) {
        os_eventq_run(os_eventq_dflt_get());
