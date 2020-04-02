@@ -48,7 +48,6 @@ charger_data_callback(struct charge_control *chg_ctrl, void * arg,
     } else {
         assert(false);
     }
-    console_flush();
     return 0;
 }
 
